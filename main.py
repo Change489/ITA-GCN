@@ -50,7 +50,7 @@ if __name__ == '__main__':
         test_dataloader = DataLoader(test_dataset, batch_size=config['batch_size'], shuffle=True)
 
 
-        model = Model(config).to(device)
+        model = ITA_GCN().to(device)
 
         if config['test_only'] == False:
 
@@ -95,17 +95,17 @@ if __name__ == '__main__':
         print("AUC: " + str(round(AUC * 100, 2)))
         print("----------------------------------------------------------")
 
-    print("Mean ACC: " + str(round(sum(Mean_ACC) / config['split_num'] * 100, 2)) + "±" + str(
-        round(np.std(Mean_ACC) * 100, 2)))
-    print("Mean SEN: " + str(round(sum(Mean_SEN) / config['split_num'] * 100, 2)) + "±" + str(
-        round(np.std(Mean_SEN) * 100, 2)))
-    print("Mean SPE: " + str(round(sum(Mean_SPE) / config['split_num'] * 100, 2)) + "±" + str(
-        round(np.std(Mean_SPE) * 100, 2)))
-    print("Mean PRE: " + str(round(sum(Mean_PRE) / config['split_num'] * 100, 2)) + "±" + str(
-        round(np.std(Mean_PRE) * 100, 2)))
-    print("Mean F1-score: " + str(round(sum(Mean_F1) / config['split_num'] * 100, 2)) + "±" + str(
-        round(np.std(Mean_F1) * 100, 2)))
-    print("Mean AUC: " + str(round(sum(Mean_AUC) / config['split_num'] * 100, 2)) + "±" + str(
-        round(np.std(Mean_AUC) * 100, 2)))
+    print("Mean ACC: " + str(round(sum(Mean_ACC) / config['split_num'] * 100, 1)) + "±" + str(
+        round(np.std(Mean_ACC) * 100, 1)))
+    print("Mean SEN: " + str(round(sum(Mean_SEN) / config['split_num'] * 100, 1)) + "±" + str(
+        round(np.std(Mean_SEN) * 100, 1)))
+    print("Mean SPE: " + str(round(sum(Mean_SPE) / config['split_num'] * 100, 1)) + "±" + str(
+        round(np.std(Mean_SPE) * 100, 1)))
+    print("Mean PRE: " + str(round(sum(Mean_PRE) / config['split_num'] * 100, 1)) + "±" + str(
+        round(np.std(Mean_PRE) * 100, 1)))
+    print("Mean F1-score: " + str(round(sum(Mean_F1) / config['split_num'] * 100, 1)) + "±" + str(
+        round(np.std(Mean_F1) * 100, 1)))
+    print("Mean AUC: " + str(round(sum(Mean_AUC) / config['split_num'] * 100, 1)) + "±" + str(
+        round(np.std(Mean_AUC) * 100, 1)))
     print(Mean_ACC)
 
