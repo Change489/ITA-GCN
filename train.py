@@ -11,7 +11,7 @@ def train_model_process(model, train_dataset, config, store_path):
 
 
     best_loss = float("inf")
-
+    ntc_label = config['ntc_label']
 
     for epoch in range(config['num_epochs']):
         epoch_loss = 0.0
@@ -23,7 +23,7 @@ def train_model_process(model, train_dataset, config, store_path):
             train_data = data[0].to(device)
             train_label = data[1].to(device)
 
-            output = model.forward(train_data)
+            output = model.forward(train_data, ntc_label)
 
             loss = criterion(output, train_label)
 
@@ -45,11 +45,5 @@ def train_model_process(model, train_dataset, config, store_path):
             long_string += " --> Best model ever (stored)"
 
         print(long_string)
-
-
-
-
-
-
 
 
