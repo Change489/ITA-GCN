@@ -68,19 +68,22 @@ class MLP(nn.Module):
         return x
 
 
-class Model(nn.Module):
-    def __init__(self, config):
-        super(Model, self).__init__()
-        self.gcn1 = GCN(116, 64, 32)
-        self.gcn2 = GCN(32, 16, 8)
-        self.mlp = MLP(116+config['n_class'],32,2)
+class ITA_GCN(nn.Module):
+    def __init__(self):
+        super(ITA_GCN, self).__init__()
+        self.gcn1 = GCN(116, 256, 128)
+        self.gcn2 = GCN(128, 64, 32)
+        self.mlp = MLP(160,64,2)
 
-    def forward(self, data):
+    def forward(self, data, ntc_label):
         output_n, output_n_ro = self.gcn1(data['data_n'], data['adj_n'])
-        data_c = torch.bmm(data['h'].transpose(1, 2), output_n)
-        output_c, output_c_ro = self.gcn2(data_c, data['adj_c'])
-        output = torch.cat((output_n_ro, output_c_ro), dim=1)
-        x = self.mlp(output)
+        data_c = torch.bmm(data['c'].transpose(1, 2), output_n)
+        output_c = self.gcn_com(data_c, data['adj_c'])
 
-        return x
+        output_c_expanded = output_c[:, ntc_label, :]
+
+        output = torch.cat((output_n, output_c_expanded), dim=2)
+        output_pool = output.sum(dim=1)
+
+        return self.mlp(output_pool)
 
