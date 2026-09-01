@@ -3,6 +3,7 @@ import scipy
 from torch import nn
 import torch.nn.functional as F
 import yaml
+import torch
 
 
 def get_ADNI(task):
@@ -35,10 +36,22 @@ def get_ABIDE():
     return pcorr, label
 
 
-def get_networks(dataset, task):
-    if dataset == 'ABIDE':
+def get_networks(config, task):
+
+    if task == 'ABIDE':
         pcorr, label = get_ABIDE()
     else:
-        pcorr, label = get_ADNI(task)
+        pcorr, label = get_ADNI()
 
-    return pcorr, label
+    with open('node_clus_map.pickle', 'rb') as handle:
+        node_clus_map = pickle.load(handle)
+
+    node_to_com_label = torch.tensor(np.array(list(node_clus_map.values())), dtype=torch.long).to(device)
+
+    pcorr_array = np.array(pcorr)
+
+    dataset = torch.tensor(pcorr_array, dtype=torch.float32).to(device)
+
+    A_node, A_com, C = create_adj_incidence_matrix(dataset, 116, config, node_to_com_label)
+
+    return pcorr, A_node, A_com, C, label, node_to_com_label
