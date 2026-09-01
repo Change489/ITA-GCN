@@ -34,7 +34,7 @@ if __name__ == '__main__':
     fold = 0
     Fold_metrics = []
 
-    for train_index, test_index in skf.split(label, label):
+    for train_index, test_index in skf.split(data, label):
         fold += 1
         print('------------------------------Fold: {}------------------------------'.format(fold))
 
